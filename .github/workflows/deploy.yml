@@ -23,8 +23,8 @@ jobs:
     #   - name: Install dependencies
     #     run: npm install
 
-      - name: Build the app
-        run: yarn run build:modernFa
+    #   - name: Build the app
+    #     run: npm run build:modernFa
 
       - name: Azure Login
         uses: azure/login@v1
