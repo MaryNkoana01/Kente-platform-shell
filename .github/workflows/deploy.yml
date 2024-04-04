@@ -1,0 +1,52 @@
+name: AzureStaticWebAppDeployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-to-azure:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4.1.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4.0.1
+        with:
+          node-version: 20
+
+      - name: Clear npm cache
+        run: npm cache verify
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the app
+        run: npm run build:dev
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Upload files to Azure Storage
+        uses: Azure/CLI@v1
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az storage blob upload-batch --account-name storagemicrofrontend --destination modern -s dist --overwrite
+            # az storage blob upload --account-name storagemicrofrontend --container-name '$web' --name index.html --file index.html --overwrite
+            
+      - name: Purge CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name cdn-microfrontend1 --name endpoint-microfrontend1 --resource-group microfrontendgroup
+            
+      # Azure logout
+      - name: logout
+        run: |
+            az logout
+        if: always()
