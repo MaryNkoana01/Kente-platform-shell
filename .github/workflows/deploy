@@ -20,11 +20,11 @@ jobs:
       - name: Clear npm cache
         run: npm cache verify
 
-    #   - name: Install dependencies
-    #     run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    #   - name: Build the app
-    #     run: npm run build:modernFa
+      - name: Build the app
+        run: npm run build:modernFa
 
       - name: Azure Login
         uses: azure/login@v1
