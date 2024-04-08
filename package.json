@@ -1,5 +1,5 @@
 {
-  "name": "Kente platform shell",
+  "name": "Kente-platform-shell",
   "version": "0.0.1",
   "description": "menu",
   "module": "./dist/index.js",
