@@ -25,8 +25,8 @@ jobs:
         run: npm install
 
 
-      # - name: Build the app
-      #   run: npm run build:modernFa
+      - name: Build the app
+        run: npm run build:modernFa
 
 
       - name: Deploy to Azure
