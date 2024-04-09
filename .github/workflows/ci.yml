@@ -29,6 +29,11 @@ jobs:
       - name: Build the app
         run: npm run build:modernFa
 
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
 
       - name: Deploy to Azure
         uses: azure/webapps-deploy@v2
