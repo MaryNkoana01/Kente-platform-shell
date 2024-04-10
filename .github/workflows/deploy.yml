@@ -37,7 +37,6 @@ jobs:
         run: |
           az storage container create --name ${{ steps.repo_name.outputs.name }} --account-name storagemicrofrontend --public-access blob
 
-
       - name: Upload files to Azure Storage
         uses: Azure/CLI@v1
         with:
