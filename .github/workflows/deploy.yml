@@ -29,12 +29,21 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Get Repository Name
+        id: repo_name
+        run: echo "::set-output name=name::${{ github.event.repository.name }}"
+
+      - name: Create Azure Storage Container
+        run: |
+          az storage container create --name ${{ steps.repo_name.outputs.name }} --account-name storagemicrofrontend --public-access blob
+
+
       - name: Upload files to Azure Storage
         uses: Azure/CLI@v1
         with:
           azcliversion: latest
           inlineScript: |
-            az storage blob upload-batch --account-name storagemicrofrontend --destination modern -s dist --overwrite
+            az storage blob upload-batch --account-name storagemicrofrontend --destination ${{ steps.repo_name.outputs.name }} -s dist --overwrite
             # az storage blob upload --account-name storagemicrofrontend --container-name '$web' --name index.html --file index.html --overwrite
             
       - name: Purge CDN endpoint
