@@ -126,6 +126,7 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+    
   },
   "scripts": {
     "start:dev": "webpack serve --config webpack.config.js",
