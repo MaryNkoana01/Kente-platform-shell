@@ -9,6 +9,11 @@ jobs:
   deploy-to-azure:
     runs-on: ubuntu-latest
     steps:
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Get Repository Name
         id: repo_name
         run: echo "::set-output name=name::${{ github.event.repository.name }}"
@@ -20,11 +25,6 @@ jobs:
       - name: Upload dist files to Azure Storage
         run: |
           az storage blob upload-batch --account-name storagemicrofrontend --destination ${{ steps.repo_name.outputs.name }} -s dist --overwrite
-
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Purge CDN endpoint
         uses: azure/CLI@v1
