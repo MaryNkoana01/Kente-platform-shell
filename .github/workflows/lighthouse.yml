@@ -34,11 +34,11 @@ jobs:
           npm install -g @lhci/cli@0.3.x
           lhci autorun --upload.target=temporary-public-storage || echo "LHCI failed!"
 
-      - name: start server
-        run: npm start:dev &
+    #   - name: start server
+    #     run: npm start:dev &
         
-      - name: Lighthouse
-        uses: foo-software/lighthouse-check-action@master
-        with:
-         urls: 'http://localhost:3000'
+    #   - name: Lighthouse
+    #     uses: foo-software/lighthouse-check-action@master
+    #     with:
+    #      urls: 'http://localhost:3000'
 
