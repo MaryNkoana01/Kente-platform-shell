@@ -2,7 +2,7 @@ name: Lighthouse
 on:
   push:
     branches:
-      - feat/lighthouse
+      - main
  
 jobs:
   lhci:
@@ -35,7 +35,7 @@ jobs:
           lhci autorun --upload.target=temporary-public-storage || echo "LHCI failed!"
 
       - name: start server
-        run: npm start &
+        run: npm start:dev &
         
       - name: Lighthouse
         uses: foo-software/lighthouse-check-action@master
