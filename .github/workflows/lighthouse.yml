@@ -1,0 +1,44 @@
+name: Lighthouse
+on:
+  push:
+    branches:
+      - feat/lighthouse
+ 
+jobs:
+  lhci:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # Cache node_modules
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install CLI dependencies
+        run: npm ci
+
+      - name: npm build
+        run: npm run build
+
+      # - name: Install Lighthouse CI
+      #   run: npm install -g @lhci/cli@0.3.x
+
+      - name: Run Lighthouse CI
+        run: |
+          npm install -g @lhci/cli@0.3.x
+          lhci autorun --upload.target=temporary-public-storage || echo "LHCI failed!"
+
+      - name: start server
+        run: npm start &
+        
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+         urls: 'http://localhost:3000'
+
