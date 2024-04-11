@@ -37,8 +37,8 @@ jobs:
     #   - name: start server
     #     run: npm start:dev &
         
-    #   - name: Lighthouse
-    #     uses: foo-software/lighthouse-check-action@master
-    #     with:
-    #      urls: 'http://localhost:3000'
+      - name: Lighthouse
+        uses: foo-software/lighthouse-check-action@master
+        with:
+         urls: 'http://localhost:3000'
 
