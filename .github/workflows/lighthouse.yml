@@ -21,7 +21,7 @@ jobs:
           cache: 'npm'
 
       - name: Install CLI dependencies
-        run: npm install
+        run: npm ci
 
       - name: npm build
         run: npm run build:modernFa
@@ -33,12 +33,13 @@ jobs:
         run: |
           npm install -g @lhci/cli@0.3.x
           lhci autorun --upload.target=temporary-public-storage || echo "LHCI failed!"
+          
 
     #   - name: start server
     #     run: npm start:dev &
         
-      - name: Lighthouse
-        uses: foo-software/lighthouse-check-action@master
-        with:
-         urls: 'http://localhost:3000'
+    #   - name: Lighthouse
+    #     uses: foo-software/lighthouse-check-action@master
+    #     with:
+    #      urls: 'http://localhost:3000'
 
