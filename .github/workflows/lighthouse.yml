@@ -2,7 +2,7 @@ name: Lighthouse
 on:
   push:
     branches:
-      - lighthouse-Status
+      - main
  
 jobs:
   lhci:
