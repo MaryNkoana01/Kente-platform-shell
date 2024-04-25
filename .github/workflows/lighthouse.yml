@@ -29,8 +29,8 @@ jobs:
       # - name: Install Lighthouse CI
       #   run: npm install -g @lhci/cli@0.3.x
 
-      - name: start app
-        run: npm run start:dev &
+      - name: start app & server
+        run: npm run lighthouse:serve
 
       - name: Run Lighthouse CI
         run: npm run lighthouse:ci
