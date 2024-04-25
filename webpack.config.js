@@ -12,7 +12,7 @@ module.exports = (envVars) => {
     mode: 'development',
     entry: path.resolve(__dirname, '.', './src/index.tsx'),
     output: {
-      publicPath: 'http://localhost:4400/',
+      publicPath: 'http://localhost:3000/',
     },
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],

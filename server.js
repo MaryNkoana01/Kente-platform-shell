@@ -1,6 +1,6 @@
 const { exec } = require('child_process');
 const waitOn = require('wait-on');
-exec('npm run fa:dev', (error, stdout, stderr) => {
+exec('npm run start:dev', (error, stdout, stderr) => {
   if (error) {
     console.log(`error: ${error.message}`);
     return;
