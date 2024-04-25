@@ -137,6 +137,8 @@
     "format": "prettier --config ./.prettierrc --ignore-path .gitignore --write \"**/*.{ts,tsx,js,jsx,html,yml,md}\"",
     "format:check": "prettier --config .prettierrc --check \"**/*.{ts,tsx,js,jsx,html,yml,md}\"",
     "compodoc": "npx compodoc -p tsconfig.doc.json",
-    "lhci": "lhci autorun"
+    "lighthouse": "lhci autorun --collect.startServerCommand=\"npm run lighthouse:serve\" --collect.startServerReadyPattern=\"Server ready at port 3000\"",
+    "lighthouse:ci": "lhci autorun",
+    "lighthouse:serve": "node server.js"
   }
 }

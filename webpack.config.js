@@ -66,7 +66,7 @@ module.exports = (envVars) => {
     ],
     stats: 'errors-only',
   };
-  
+
   const { env } = envVars;
 
   //   dev mode for development/demo
@@ -87,7 +87,7 @@ module.exports = (envVars) => {
           shared: {
             react: { singleton: true, eager: true, requiredVersion: deps['react'] },
           },
-        })
+        }),
       ],
     };
   };

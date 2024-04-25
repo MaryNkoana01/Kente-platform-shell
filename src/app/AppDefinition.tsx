@@ -3,8 +3,8 @@ import { FeatureAppDefinition } from '@feature-hub/core';
 import { ReactFeatureApp } from '@feature-hub/react';
 import React from 'react';
 import { helloWorldServiceDefinition } from './services/feature-app-service';
-import {App} from "./App"
-import { Platform,Variant } from '@mtnkente/paragon-foundation';
+import { App } from './App';
+import { Platform, Variant } from '@mtnkente/paragon-foundation';
 
 const FeatureHubAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
   dependencies: {
@@ -20,9 +20,7 @@ const FeatureHubAppDefinition: FeatureAppDefinition<ReactFeatureApp> = {
 
     return {
       render: () => {
-        return (
-         <App themeType={Platform.MOMO} themeVarient={Variant.DARK}/>
-        );
+        return <App themeType={Platform.MOMO} themeVarient={Variant.DARK} />;
       },
     };
   },

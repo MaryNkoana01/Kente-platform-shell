@@ -44,15 +44,15 @@ jobs:
           inlineScript: |
             az storage blob upload-batch --account-name storagemicrofrontend --destination ${{ steps.repo_name.outputs.name }} -s dist --overwrite
             # az storage blob upload --account-name storagemicrofrontend --container-name '$web' --name index.html --file index.html --overwrite
-            
+
       - name: Purge CDN endpoint
         uses: azure/CLI@v1
         with:
           inlineScript: |
             az cdn endpoint purge --content-paths  "/*" --profile-name cdn-microfrontend1 --name endpoint-microfrontend1 --resource-group microfrontendgroup
-            
+
       # Azure logout
       - name: logout
         run: |
-            az logout
+          az logout
         if: always()

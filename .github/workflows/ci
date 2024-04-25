@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -44,7 +44,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: node-app
-  
+
       # - name: Unzip artifact for deployment
       #   run: unzip release.zip
 

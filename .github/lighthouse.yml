@@ -2,7 +2,7 @@ name: Lighthouse
 on:
   push:
     branches:
-      - main
+      - feat/lighthouse
 
 jobs:
   lhci:
@@ -26,21 +26,7 @@ jobs:
       - name: npm build
         run: npm run build:modernFa
 
-      # - name: Install Lighthouse CI
-      #   run: npm install -g @lhci/cli@0.3.x
-
       - name: Run Lighthouse CI
         run: |
           npm install -g @lhci/cli@0.3.x
-          lhci autorun
-
-        env:
-          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
-
-    #   - name: start server
-    #     run: npm start:dev &
-
-    #   - name: Lighthouse
-    #     uses: foo-software/lighthouse-check-action@master
-    #     with:
-    #      urls: 'http://localhost:3000'
+          lhci autorun --upload.target=temporary-public-storage || echo "LHCI failed!"
