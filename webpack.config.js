@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const { merge } = require('webpack-merge');
 const webpack = require('webpack');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
@@ -10,6 +11,9 @@ module.exports = (envVars) => {
     devtool: false,
     mode: 'development',
     entry: path.resolve(__dirname, '.', './src/index.tsx'),
+    output: {
+      publicPath: 'http://localhost:4400/',
+    },
     resolve: {
       extensions: ['.tsx', '.ts', '.js'],
     },
@@ -70,27 +74,25 @@ module.exports = (envVars) => {
   const { env } = envVars;
 
   //   dev mode for development/demo
-  const devConfig = () => {
-    return {
-      mode: 'development',
-      devServer: {
-        hot: true,
-        open: true,
-        port: 4400,
-      },
-      plugins: [
-        new ReactRefreshWebpackPlugin(),
-        new webpack.DefinePlugin({
-          'process.env.name': JSON.stringify('Vishwas'),
-        }),
-        new webpack.container.ModuleFederationPlugin({
-          shared: {
-            react: { singleton: true, eager: true, requiredVersion: deps['react'] },
-          },
-        }),
-      ],
-    };
-  };
+  const devConfig = () => ({
+    mode: 'development',
+    devServer: {
+      hot: true,
+      open: true,
+      port: 3000,
+    },
+    plugins: [
+      new ReactRefreshWebpackPlugin(),
+      new webpack.DefinePlugin({
+        'process.env.name': JSON.stringify('Vishwas'),
+      }),
+      new webpack.container.ModuleFederationPlugin({
+        shared: {
+          react: { singleton: true, eager: true, requiredVersion: deps['react'] },
+        },
+      }),
+    ],
+  });
 
   //   Build modern feature app entry index to be hosted as an application
   const modernFederatedFeatureApp = () => {
@@ -99,11 +101,15 @@ module.exports = (envVars) => {
       entry: {
         main: path.join(__dirname, './src/index.tsx'),
       },
+      externals: {
+        react: 'react',
+      },
       output: {
         filename: '[name].js',
         path: path.resolve(__dirname, './dist/modern'),
         sourceMapFilename: '[name].[hash:8].map',
         chunkFilename: '[id].[hash:8].js',
+        clean: true,
       },
       plugins: [
         new webpack.container.ModuleFederationPlugin({
