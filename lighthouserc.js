@@ -7,10 +7,8 @@ module.exports = {
     upload: {
       target: 'temporary-public-storage',
     },
-    assertions: {
-      'categories:performance': ['error', { minScore: 0.9 }],
-      'categories:accessibility': ['warn', { minScore: 0.9 }],
+    assert: {
+      preset: "lighthouse:recommended",
     },
-
   },
 };
