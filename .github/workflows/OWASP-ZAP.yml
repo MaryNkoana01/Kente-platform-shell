@@ -1,4 +1,4 @@
-name: OWASP ZAP Full Scan Integration without Docker
+name: OWASP ZAP Full Scan Integration with GitHub Actions
 
 on:
   push:
@@ -12,24 +12,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '11'
-
-      - name: Download OWASP ZAP
-        run: |
-          wget https://github.com/zaproxy/zaproxy/releases/download/v2.12.0/ZAP_2_12_0_unix.sh
-          chmod +x ZAP_2_12_0_unix.sh
-          sudo ./ZAP_2_12_0_unix.sh -q
-
       - name: Run OWASP ZAP Full Scan
-        run: |
-          /opt/ZAP_2.12.0/zap.sh -daemon -config api.disablekey=true &
-          sleep 10 # Give ZAP a few seconds to start
-          wget -O zap-full-scan.py https://raw.githubusercontent.com/zaproxy/zap-admin/master/docker/zap-full-scan.py
-          python3 zap-full-scan.py -t http://testphp.vulnweb.com -r report_html.html -w report_md.md -J report_json.json -t 300
+        uses: zaproxy/action-baseline@v0.12.0
+        with:
+          target: 'http://testphp.vulnweb.com' # Ensure this URL is correct
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_action: true # Set to true to fail the action if any alerts are found
+          cmd_options: '-r report_html.html -t 300' # Ensure the report is generated with correct path and timeout is set
 
       - name: Upload ZAP Scan Report
         if: always() # Ensure this runs even if the previous step fails
