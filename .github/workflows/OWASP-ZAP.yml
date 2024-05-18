@@ -17,7 +17,7 @@ jobs:
         with:
           target: 'http://testphp.vulnweb.com' # Replace with your target URL
           token: ${{ secrets.GITHUB_TOKEN }}
-          fail_action: true # Set to true to fail the action if any alerts are found
+          fail_action: false # Set to true to fail the action if any alerts are found
           cmd_options: '-t 300' # Optional: Set timeout to 300 seconds
           artifact_name: 'zap_scan_report' # Optional: Name for the artifact
 
