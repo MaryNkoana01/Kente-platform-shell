@@ -20,13 +20,13 @@ jobs:
 
       - name: Download OWASP ZAP
         run: |
-          wget https://github.com/zaproxy/zaproxy/releases/download/v2.11.1/ZAP_2_11_1_unix.sh
-          chmod +x ZAP_2_11_1_unix.sh
-          sudo ./ZAP_2_11_1_unix.sh -q
+          wget https://github.com/zaproxy/zaproxy/releases/download/v2.12.0/ZAP_2_12_0_unix.sh
+          chmod +x ZAP_2_12_0_unix.sh
+          sudo ./ZAP_2_12_0_unix.sh -q
 
       - name: Run OWASP ZAP Full Scan
         run: |
-          /opt/ZAP_2.11.1/zap.sh -daemon -config api.disablekey=true &
+          /opt/ZAP_2.12.0/zap.sh -daemon -config api.disablekey=true &
           sleep 10 # Give ZAP a few seconds to start
           wget -O zap-full-scan.py https://raw.githubusercontent.com/zaproxy/zap-admin/master/docker/zap-full-scan.py
           python3 zap-full-scan.py -t http://testphp.vulnweb.com -r report_html.html -w report_md.md -J report_json.json -t 300
