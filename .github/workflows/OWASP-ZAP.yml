@@ -1,13 +1,30 @@
-name: OWASP ZAP Integration with GitHub Actions
+name: OWASP ZAP Full Scan Integration with GitHub Actions
 
 on:
   push:
 
 jobs:
-  build:
+  zap_full_scan:
     runs-on: ubuntu-latest
+    name: Perform OWASP ZAP Full Scan
+
     steps:
-      - name: OWASP ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.3.0
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run OWASP ZAP Full Scan
+        uses: zaproxy/action-full-scan@v0.6.0
         with:
-          target: 'https://your-website.com/'
+          target: 'http://testphp.vulnweb.com' # Replace with your target URL
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_action: true # Set to true to fail the action if any alerts are found
+          cmd_options: '-t 300' # Optional: Set timeout to 300 seconds
+          artifact_name: 'zap_scan_report' # Optional: Name for the artifact
+
+      - name: Upload ZAP Scan Report
+        if: always() # Ensure this runs even if the previous step fails
+        uses: actions/upload-artifact@v3
+        with:
+          name: zap_scan_report
+          path: zap_scan_report.html
+
