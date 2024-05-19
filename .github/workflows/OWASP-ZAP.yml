@@ -10,11 +10,11 @@ jobs:
   security-scan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3  # Checkout code from the repository
+      - uses: actions/checkout@v2  # Checkout code from the repository
       - name: Install ZAP
         run: sudo apt update && sudo apt install zaproxy
       - name: Run OWASP ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v1.3.1  # Update to the latest stable version
+        uses: zaproxy/action-baseline@v0.12.0  # Update to the latest stable version
         with:
           target: "https://www.bing.com/"
           # Add other ZAP Baseline action options here (e.g., fail_action)
