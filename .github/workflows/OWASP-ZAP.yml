@@ -1,4 +1,5 @@
 name: site-security-scan
+
 on:
   push:
     branches: [ main ]
@@ -6,10 +7,14 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  security-scan:
     runs-on: ubuntu-latest
-    steps:     
-    - name: OWASP ZAP Baseline Scan
-      uses: zaproxy/action-baseline@v0.3.0
-      with:
-        target: "https://www.bing.com/"
+    steps:
+      - uses: actions/checkout@v3  # Checkout code from the repository
+      - name: Install ZAP
+        run: sudo apt update && sudo apt install zaproxy
+      - name: Run OWASP ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v1.3.1  # Update to the latest stable version
+        with:
+          target: "https://www.bing.com/"
+          # Add other ZAP Baseline action options here (e.g., fail_action)
