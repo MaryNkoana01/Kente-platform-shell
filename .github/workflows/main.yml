@@ -3,25 +3,26 @@ on:
   push:
 jobs:
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-      
-      - name: OWASP ZAP Baseline Scan
-        
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up ZAP Baseline Scan
+        id: zap
         uses: zaproxy/action-baseline@v0.12.0
         with:
-          # Target URL
           target: "https://www.shecodes.io/"
           rules_file_name: '.zap/rules.tsv'
           cmd_options: '-a'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload ZAP Report
+        if: always()
         uses: actions/upload-artifact@v2
         with:
           name: zap-report
           path: zap_report.html
+
