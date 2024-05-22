@@ -14,8 +14,7 @@ jobs:
         uses: zaproxy/action-baseline@v0.12.0
         with:
           target: "https://www.shecodes.io/"
-          rules_file_name: '.zap/rules.tsv'
-          cmd_options: '-a'
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
