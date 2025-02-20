@@ -1,0 +1,59 @@
+
+name: SonarQube Scan
+
+on: [push, pull_request]
+
+jobs:
+  sonarqube:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Compose
+        run: |
+          docker compose version
+      - name: Create Nginx Configuration
+        run: |
+          cat <<EOF > nginx.conf
+          events {}
+          http {
+              server {
+                  listen 80;
+                  server_name localhost;
+                  location / {
+                      proxy_pass http://sonarqube:9000;
+                      proxy_set_header Host $host;
+                      proxy_set_header X-Real-IP $remote_addr;
+                      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                      proxy_set_header X-Forwarded-Proto $scheme;
+                  }
+              }
+          }
+          EOF
+      - name: Start SonarQube and Nginx
+        run: docker compose up -d
+
+      - name: Wait for SonarQube to be ready
+        run: |
+          echo "Waiting for SonarQube to start..."
+          until curl -s http://localhost:9000/api/system/status | grep -q '"status":"UP"'; do
+            sleep 5
+          done
+          echo "SonarQube is up and running!"
+      - name: Install SonarScanner
+        run: |
+          curl -fsSL -o sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+          unzip sonar-scanner.zip
+          sudo mv sonar-scanner-*/ /opt/sonar-scanner
+      - name: Run SonarQube Scan via Nginx
+        run: |
+          /opt/sonar-scanner/bin/sonar-scanner \
+            -Dsonar.projectKey=my-project \
+            -Dsonar.sources=. \
+            -Dsonar.host.url=http://localhost \
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+      - name: Stop and Clean Up Services
+        if: always()
+        run: docker compose down
