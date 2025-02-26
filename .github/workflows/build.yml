@@ -1,19 +1,32 @@
-name: Build
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [opened, synchronize, reopened]
+name: Trivy Scan
+on: [push, pull_request]
+
+permissions:
+  security-events: write
+  actions: read
+  contents: read
+
 jobs:
-  sonarqube:
-    name: SonarQube
-    runs-on: windows-latest
+  scan:
+    name: Trivy Scan
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Trivy
+        run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
+
+      - name: Run Trivy Vulnerability Scan
+        run: |
+          ./bin/trivy image --format table --severity HIGH,CRITICAL ruby:2.7 | tee trivy-results.txt
+
+      - name: Upload Trivy Scan Results as Artifact
+        uses: actions/upload-artifact@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v4
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          name: trivy-results
+          path: trivy-results.txt
+
+      - name: Display Trivy Scan Results
+        run: cat trivy-results.txt
