@@ -13,7 +13,7 @@ jobs:
     permissions:
       actions: read
       contents: read
-      security-events: write
+      security-events: write 
 
     steps:
       - name: Checkout repository
@@ -22,13 +22,13 @@ jobs:
       - name: Install Trivy
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
-
+      
       - name: Run Trivy Vulnerability Scan
         run: |
-          ./bin/trivy image --format table --severity MEDIUM,HIGH,CRITICAL ruby:2.7 | tee "trivy-results-$TIMESTAMP.txt"
-
+          ./bin/trivy image --format table --severity MEDIUM,HIGH,CRITICAL ruby:2.7 | tee "trivy-results.txt"
+      
       - name: Upload Trivy Scan Results as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: trivy-results-${{ env.TIMESTAMP }}
-          path: trivy-results-*.txt
+          name: trivy-results
+          path: trivy-results.txt
