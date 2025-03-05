@@ -24,23 +24,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Run Trivy vulnerability scanner vul
+      - name: Install Trivy
         uses: aquasecurity/trivy-action@0.28.0
         with:
           scan-type: 'fs'
-          scan-ref: '.'
-          format: 'table'
-          severity: 'CRITICAL,HIGH'
-          vuln-type: 'os,library'
-          scanners: 'misconfig,secret,license'
-          continue-on-error: true
+          scanners: 'vuln,config,secret,license'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL'
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@0.28.0
+      - name: Upload Trivy scan results as artifact
+        uses: actions/upload-artifact@v4
         with:
-          scan-type: 'fs'
-          scan-ref: '.'
-          format: 'table'
-          severity: 'CRITICAL,HIGH'
-          vuln-type: 'os,library'
-          scanners: 'vuln'
+          name: trivy-results
+          path: trivy-results.sarif
