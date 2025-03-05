@@ -32,7 +32,7 @@ jobs:
           format: 'table'
           severity: 'CRITICAL,HIGH'
           vuln-type: 'os,library'
-          scanners: 'config,secret,license'
+          scanners: 'misconfig,secret,license'
           continue-on-error: true
 
       - name: Run Trivy vulnerability scanner
@@ -43,4 +43,4 @@ jobs:
           format: 'table'
           severity: 'CRITICAL,HIGH'
           vuln-type: 'os,library'
-          scanners: 'library'
+          scanners: 'vuln'
