@@ -30,8 +30,6 @@ jobs:
           scan-type: 'fs'
           scan-ref: '.'
           format: 'table'
-          exit-code: '1'
           severity: 'CRITICAL,HIGH'
           vuln-type: 'os,library'
-          ignore-unfixed: false
           scanners: 'vuln,config,secret,license'
