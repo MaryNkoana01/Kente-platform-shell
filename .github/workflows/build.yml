@@ -1,4 +1,5 @@
-name: 'Trivy Code Scan'
+name: Trivy code scan
+
 on:
   push:
     branches: ['main']
@@ -13,22 +14,33 @@ jobs:
     permissions:
       actions: read
       contents: read
-      security-events: write 
+      security-events: write
+
+    strategy:
+      matrix:
+        language: ['javascript', 'typescript']
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Trivy
+      - name: Run Trivy Vulnerability Scan (All Severities)
         run: |
-          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh
-      
-      - name: Run Trivy Vulnerability Scan
-        run: |
-          ./bin/trivy image --format table --severity MEDIUM,HIGH,CRITICAL ruby:2.7 | tee "trivy-results.txt"
-      
+          trivy fs . --scanners vuln,misconfig,secret,license --severity LOW,MEDIUM,HIGH,CRITICAL --format table | tee trivy-results.txt
+
+      - name: Fail on HIGH and CRITICAL vulnerabilities
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'fs'
+          input: '.'
+          scanners: 'vuln,misconfig,secret,license'
+          severity: 'HIGH,CRITICAL'
+          exit-code: 1
+          format: 'table'
+
       - name: Upload Trivy Scan Results as Artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: trivy-results
+          name: trivy-results-${{ matrix.language }}
           path: trivy-results.txt
