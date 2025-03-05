@@ -33,5 +33,5 @@ jobs:
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
           vuln-type: 'os,library'
-          ignore-unfixed: true
+          ignore-unfixed: false
           scanners: 'vuln,config,secret,license'
