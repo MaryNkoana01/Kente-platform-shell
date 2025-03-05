@@ -26,6 +26,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.24.0",
+    "lodash": "4.17.10"
     "@feature-hub/core": "^3.6.0",
     "@feature-hub/dom": "^3.6.0",
     "@feature-hub/history-service": "^3.6.0",
