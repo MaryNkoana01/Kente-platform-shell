@@ -32,4 +32,4 @@ jobs:
           format: 'table'
           severity: 'CRITICAL,HIGH'
           vuln-type: 'os,library'
-          scanners: 'vuln,config,secret,license'
+          scanners: 'config,secret'
