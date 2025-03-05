@@ -29,9 +29,9 @@ jobs:
         with:
           scan-type: 'fs'
           scanners: 'vuln,config,secret,license'
-          format: 'sarif'
+          format: 'table'
           output: 'trivy-results.sarif'
-          severity: 'CRITICAL'
+          severity: 'CRITICAL,HIGH'
 
       - name: Upload Trivy scan results as artifact
         uses: actions/upload-artifact@v4
