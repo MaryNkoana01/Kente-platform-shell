@@ -25,8 +25,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Trivy Vulnerability Scan (All Severities)
-        run: |
-          trivy fs . --scanners vuln,misconfig,secret,license --severity LOW,MEDIUM,HIGH,CRITICAL --format table | tee trivy-results.txt
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: 'fs'
+          input: '.'
+          scanners: 'vuln,misconfig,secret,license'
+          severity: 'LOW,MEDIUM,HIGH,CRITICAL'
+          format: 'table'
+          output: 'trivy-results.txt'
 
       - name: Fail on HIGH and CRITICAL vulnerabilities
         uses: aquasecurity/trivy-action@0.28.0
